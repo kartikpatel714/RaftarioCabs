@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> - RaftarioCabs
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        /* Header Section */
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 2rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-field {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/images/map-pattern.png') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .header-section button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            margin: 0 0.5rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .header-section button:hover,
+        .header-section button.active {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-container button {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hero Content */
+        .text-content {
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .text-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .text-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .store-buttons img {
+            height: 50px;
+            margin-right: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .store-buttons img:hover {
+            transform: scale(1.05);
+        }
+
+        .image-container {
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .homeF {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* About Section */
+        #about {
+            background: var(--light-color);
+        }
+
+        #about h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        #about p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .feature-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            height: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-box h5 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Services Section */
+        .fare-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .fare-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .fare-links a {
+            display: block;
+            color: #555;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .fare-links a:hover {
+            color: var(--secondary-color);
+            background: rgba(231, 76, 60, 0.1);
+            padding-left: 1rem;
+        }
+
+        /* Contact Section */
+        .help-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .help-section h4 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 3rem 0;
+        }
+
+        footer a {
+            color: var(--light-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .text-content h2 {
+                font-size: 2rem;
+            }
+
+            .image-container {
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-section button {
+                display: block;
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+
+            .text-content {
+                text-align: center;
+            }
+
+            .store-buttons {
+                justify-content: center;
+            }
+
+            .fare-links .col-md-4 {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .content-section {
+                padding: 2rem 0;
+            }
+
+            .text-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation will be loaded here -->
+    <%- include('partials/header') %>
+
+        <section id="home" class="content-section">
+            <!-- Hero Section -->
+            <header class="header-section">
+                <section class="header-field container">
+                    <div class="text-center">
+                        <button class="active" onclick="showForm('daily', this)">One Way</button>
+                        <button onclick="showForm('rental', this)">Rental</button>
+                        <button onclick="showForm('outstation', this)">Outstation</button>
+                    </div>
+
+                    <div class="container mt-4">
+                        <form id="daily-form" class="form-container animate" action="/submit-form" method="POST">
+                            <input type="hidden" name="formType" value="daily">
+                            <input type="text" id="daily-pickup" name="pickup" placeholder="Pickup Location" required>
+                            <input type="text" id="daily-drop" name="drop" placeholder="Drop Location" required>
+                            <button type="submit"><i class="fas fa-search"></i> Check Fare</button>
+                        </form>
+                        <form id="rental-form" class="form-container animate" action="/submit-form" method="POST"
+                            style="display: none;">
+                            <input type="hidden" name="formType" value="rental">
+                            <input type="text" id="rental-pickup" name="pickup" placeholder="Pickup Location" required>
+                            <input type="text" id="rental-drop" name="drop" placeholder="Drop Location" required>
+                            <button type="submit"><i class="fas fa-search"></i> Check Rental Fare</button>
+                        </form>
+                        <form id="outstation-form" class="form-container animate" action="/submit-form" method="POST"
+                            style="display: none;">
+                            <input type="hidden" name="formType" value="outstation">
+                            <input type="text" id="outstation-pickup" name="pickup" placeholder="Pickup Location"
+                                required>
+                            <input type="text" id="outstation-drop" name="drop" placeholder="Drop Location" required>
+                            <button type="submit"><i class="fas fa-search"></i> Check Outstation Fare</button>
+                        </form>
+                    </div>
+
+                    <div class="container mt-5">
+                        <div class="row align-items-center">
+                            <!-- Left Side: Text and App Download Options -->
+                            <div class="col-lg-6">
+                                <div class="text-content">
+                                    <h2>Get There with Ease: Reliable Taxi Services at Your Fingertips</h2>
+                                    <p>Fast, affordable, and convenient rides, available 24/7 across India</p>
+
+                                    <!-- Play Store & App Store Buttons -->
+                                    <div class="store-buttons d-flex">
+                                        <a href="https://play.google.com/store" target="_blank">
+                                            <img src="/images/playstore.png" alt="Download on Play Store">
+                                        </a>
+                                        <a href="https://apps.apple.com/" target="_blank">
+                                            <img src="/images/appStore.png" alt="Download on App Store">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Side: Image -->
+                            <div class="col-lg-6">
+                                <div class="image-container">
+                                    <img src="/images/home-removebg-preview.png" alt="Taxi Service">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="homeF text-center">
+                            <p class="mb-0"><i class="fas fa-quote-left"></i> Great service! The driver was on time, and
+                                the car was clean and comfortable. Highly recommend RaftarioCabs for all your travel
+                                needs. <i class="fas fa-quote-right"></i></p>
+                        </div>
+                    </div>
+                </section>
+            </header>
+        </section>
+
+        <section id="about" class="content-section">
+            <div class="container text-center">
+                <h2>Why Choose RaftarioCabs?</h2>
+                <p class="lead">India's Leading One-Way Inter City Cab Service Provider</p>
+                <p>Now when you travel one-way inter-city, you pay one-way.</p>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+                    <div class="col">
+                        <div class="feature-box">
+                            <i class="fas fa-phone-alt feature-icon"></i>
+                            <h5>24x7 Helpline</h5>
+                            <p>Available anytime: 08002047247</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-box">
+                            <i class="fas fa-tachometer-alt feature-icon"></i>
+                            <h5>No Extra KM Charge</h5>
+                            <p>No additional fare for extra kilometers.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-box">
+                            <i class="fas fa-shield-alt feature-icon"></i>
+                            <h5>Assured Cab</h5>
+                            <p>Booking confirmed? You get a cab.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-box">
+                            <i class="fas fa-map-marker-alt feature-icon"></i>
+                            <h5>GPS Enabled</h5>
+                            <p>Track your cab in real-time.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-box">
+                            <i class="fas fa-money-bill-wave feature-icon"></i>
+                            <h5>Transparent Pricing</h5>
+                            <p>Pay only what you see before booking.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-box">
+                            <i class="fas fa-home feature-icon"></i>
+                            <h5>Home Pickup & Drop</h5>
+                            <p>Pick-up & drop anywhere, including airports.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <h4>Download Our App Today</h4>
+                    <p>Book rides faster and get exclusive app-only discounts</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="#"><img src="/images/playstore.png" alt="Google Play" width="150"></a>
+                        <a href="#"><img src="/images/appStore.png" alt="App Store" width="150"></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="content-section bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">Popular Routes & Fares</h2>
+
+                <% fares.forEach(fareGroup=> { %>
+                    <div class="fare-section">
+                        <h4 class="fare-title"><i class="fas fa-map-marker-alt me-2"></i>Fare From <%= fareGroup.from %>
+                        </h4>
+                        <div class="row fare-links">
+                            <% fareGroup.routes.forEach(route=> { %>
+                                <div class="col-md-4"><a href="/fare/<%= route.slug %>"><i class="fas fa-taxi me-2"></i>
+                                        <%= route.name %>
+                                    </a></div>
+                                <% }); %>
+                        </div>
+                    </div>
+                    <% }); %>
+            </div>
+        </section>
+
+        <section id="contact" class="content-section">
+            <div class="container">
+                <h2 class="text-center mb-5">Help & Support</h2>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="help-section">
+                            <h4><i class="fas fa-headset me-2"></i>Contact Support</h4>
+                            <p>Our customer support team is available 24/7 to assist you with any queries or concerns.
+                            </p>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><strong><i class="fas fa-phone me-2"></i>Customer Support:</strong>
+                                    <%= contact.phone %>
+                                </li>
+                                <li class="mb-2"><strong><i class="fas fa-envelope me-2"></i>Email:</strong>
+                                    <%= contact.email %>
+                                </li>
+                                <li class="mb-2"><strong><i class="fas fa-comment-dots me-2"></i>Live Chat:</strong>
+                                    Available on our website and app</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="help-section">
+                            <h4><i class="fas fa-question-circle me-2"></i>Frequently Asked Questions</h4>
+                            <div class="accordion" id="faqAccordion">
+                                <% faqs.forEach((faq, index)=> { %>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button <%= index === 0 ? '' : 'collapsed' %>"
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#faq<%= index %>">
+                                                <%= faq.question %>
+                                            </button>
+                                        </h2>
+                                        <div id="faq<%= index %>"
+                                            class="accordion-collapse collapse <%= index === 0 ? 'show' : '' %>"
+                                            data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                <%= faq.answer %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section mt-4">
+                    <h4><i class="fas fa-credit-card me-2"></i>Payment & Refunds</h4>
+                    <p>We accept various payment methods including credit/debit cards, net banking, UPI, and digital
+                        wallets. All transactions are secure and encrypted. Refunds for canceled rides are processed
+                        within 3-5 business days to your original payment method.</p>
+                </div>
+            </div>
+        </section>
+
+        <%- include('partials/footer') %>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                // Form switching functionality
+                function showForm(formType, button) {
+                    // Hide all forms
+                    document.querySelectorAll('.form-container').forEach(form => {
+                        form.style.display = 'none';
+                    });
+
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.header-section button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+
+                    // Show selected form and make button active
+                    document.getElementById(formType + '-form').style.display = 'block';
+                    button.classList.add('active');
+                }
+
+                // Initialize the first form as visible
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelector('.header-section button').click();
+                });
+
+                // Auto-complete for location inputs
+                document.addEventListener('DOMContentLoaded', function () {
+                    const inputs = document.querySelectorAll('input[name="pickup"], input[name="drop"]');
+
+                    inputs.forEach(input => {
+                        const autocomplete = new google.maps.places.Autocomplete(input, {
+                            types: ['geocode'],
+                            componentRestrictions: { country: 'in' }
+                        });
+
+                        autocomplete.addListener('place_changed', function () {
+                            const place = autocomplete.getPlace();
+                            if (!place.geometry) {
+                                input.setCustomValidity('Please select a valid location from the dropdown');
+                            } else {
+                                input.setCustomValidity('');
+                            }
+                        });
+                    });
+                });
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=<%= googleApiKey %>&libraries=places"></script>
+</body>
+
+</html>

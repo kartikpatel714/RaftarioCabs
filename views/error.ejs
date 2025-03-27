@@ -1,0 +1,42 @@
+<!-- views/error.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head', { title: title || 'Error' }) %>
+        <style>
+            .error-container {
+                max-width: 600px;
+                margin: 100px auto;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .error-icon {
+                font-size: 5rem;
+                color: #e74c3c;
+                margin-bottom: 20px;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <div class="error-container">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h1>
+                <%= title || 'Error' %>
+            </h1>
+            <p class="lead">
+                <%= message || 'An unexpected error occurred' %>
+            </p>
+            <a href="/" class="btn btn-primary mt-3">Return to Home</a>
+        </div>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>
