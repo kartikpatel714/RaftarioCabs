@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Cab Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/d-styles.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="text-primary">CabExpress</h4>
+            <p class="text-muted small mb-0">User Dashboard</p>
+        </div>
+
+        <ul class="nav flex-column sidebar-menu">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-calendar-alt"></i> My Bookings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-car"></i> Ride History
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-wallet"></i> Payments
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-heart"></i> Favorites
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-map-marker-alt"></i> Addresses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-question-circle"></i> Help
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="dashboard-header">
+            <div>
+                <h2 class="mb-1">Welcome back, <%= user.name %>!</h2>
+                <p class="text-muted mb-0">Here's what's happening with your bookings</p>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+
+                <div class="user-profile">
+                    <img src="<%= user.avatar %>" alt="User" class="user-avatar">
+                    <div>
+                        <div class="fw-bold">
+                            <%= user.name %>
+                        </div>
+                        <div class="text-muted small">
+                            <%= user.membership %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon icon-primary">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="stat-value">
+                    <%= user.stats.totalRides %>
+                </div>
+                <div class="stat-label">Total Rides</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon icon-success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-value">
+                    <%= user.stats.completed %>
+                </div>
+                <div class="stat-label">Completed</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon icon-warning">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-value">
+                    <%= user.stats.upcoming %>
+                </div>
+                <div class="stat-label">Upcoming</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon icon-danger">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-value">
+                    <%= user.stats.cancelled %>
+                </div>
+                <div class="stat-label">Cancelled</div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h5 class="mb-4">Recent Activity</h5>
+
+            <% user.recentActivity.forEach(activity=> { %>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas <%= activity.icon %>"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div>
+                            <%= activity.text %>
+                        </div>
+                        <div class="activity-time">
+                            <%= activity.time %>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+
+        <!-- Current Bookings -->
+        <h4 class="mb-4">Your Bookings</h4>
+
+        <div class="booking-grid">
+            <% user.bookings.forEach(booking=> { %>
+                <div class="booking-card">
+                    <div class="card-header">
+                        <span>Booking #<%= booking.id %></span>
+                        <span class="status-badge status-<%= booking.status %>">
+                            <%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="detail-row">
+                            <span class="detail-label">Route</span>
+                            <span class="detail-value highlight-value">
+                                <%= booking.route %>
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Date & Time</span>
+                            <span class="detail-value">
+                                <%= booking.date %>
+                            </span>
+                        </div>
+                        <% if (booking.driver) { %>
+                            <div class="detail-row">
+                                <span class="detail-label">Driver</span>
+                                <span class="detail-value">
+                                    <%= booking.driver %>
+                                </span>
+                            </div>
+                            <% } %>
+                                <div class="detail-row">
+                                    <span class="detail-label">Vehicle</span>
+                                    <span class="detail-value">
+                                        <%= booking.vehicle %>
+                                    </span>
+                                </div>
+                                <% if (booking.amount) { %>
+                                    <div class="detail-row">
+                                        <span class="detail-label">Amount</span>
+                                        <span class="detail-value highlight-value">
+                                            <%= booking.amount %>
+                                        </span>
+                                    </div>
+                                    <% } %>
+
+                                        <div class="action-buttons">
+                                            <% booking.buttons.forEach(button=> { %>
+                                                <button
+                                                    class="btn-action <%= button.type === 'primary' ? 'btn-primary-action' : 'btn-secondary-action' %>">
+                                                    <i class="fas <%= button.icon %>"></i>
+                                                    <%= button.text %>
+                                                </button>
+                                                <% }); %>
+                                        </div>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Interactive elements
+        document.querySelectorAll('.booking-card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                // Don't trigger if clicking on a button or link
+                if (!e.target.closest('button, a')) {
+                    const details = this.querySelector('.card-body');
+                    details.style.display = details.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Simulate loading for demo purposes
+        document.querySelectorAll('.btn-action').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    alert('Action completed!');
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+
+</html>

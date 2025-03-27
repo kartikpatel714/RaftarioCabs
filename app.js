@@ -135,10 +135,164 @@ app.post('/submit-form', async (req, res) => {
     }
 });
 
+app.get('/book-ride', (req, res) => {
+    const { pickup, drop, carType, fare } = req.query;
+
+    if (!pickup || !drop || !carType || !fare) {
+        return res.redirect('/?error=Missing booking parameters');
+    }
+
+    res.render('booking-form', {
+        title: 'Confirm Your Ride',
+        pickup,
+        drop,
+        carType,
+        fare: parseFloat(fare).toFixed(2)
+    });
+});
+
+// Booking submission API endpoint
+app.post('/api/bookings', (req, res) => {
+    try {
+        const {
+            pickup,
+            drop,
+            carType,
+            fare,
+            userName,
+            mobile,
+            pickupDetail,
+            dropDetail,
+            gstNumber
+        } = req.body;
+
+        // Validate required fields
+        if (!userName || !mobile || !pickupDetail || !dropDetail) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please fill all required fields'
+            });
+        }
+
+        // Create booking (in real app, save to database)
+        const bookingId = 'B' + Date.now().toString().slice(-8);
+
+        res.json({
+            success: true,
+            bookingId,
+            message: 'Booking confirmed successfully'
+        });
+
+    } catch (error) {
+        console.error('Booking error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred while processing your booking'
+        });
+    }
+});
+
+// Add to app.js
+app.get('/booking-confirmation/:id', (req, res) => {
+    // In a real app, you would fetch the booking from your database
+    const booking = {
+        bookingId: req.params.id,
+        pickup: req.query.pickup || "Vadodara",
+        drop: req.query.drop || "Ahmedabad",
+        carType: req.query.carType || "AC HATCHBACK",
+        fare: req.query.fare || "1200.00",
+        userName: req.query.userName || "John Doe",
+        mobile: req.query.mobile || "9876543210"
+    };
+
+    res.render('booking-confirmation', {
+        title: 'Booking Confirmed',
+        booking
+    });
+});
+
+
+const userData = {
+    name: "Karth Patel",
+    membership: "Gold Member",
+    avatar: "https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/man-light-skin-tone.png",
+    stats: {
+        totalRides: 24,
+        completed: 18,
+        upcoming: 3,
+        cancelled: 3
+    },
+    recentActivity: [
+        {
+            icon: "fa-car",
+            text: "Your booking #51719618 has been completed",
+            time: "2 hours ago"
+        },
+        {
+            icon: "fa-wallet",
+            text: "Payment of ₹1600 received for booking #51719618",
+            time: "5 hours ago"
+        },
+        {
+            icon: "fa-star",
+            text: "You earned 15 loyalty points for your ride",
+            time: "Yesterday"
+        },
+        {
+            icon: "fa-calendar-alt",
+            text: "New booking #62348721 confirmed for April 15",
+            time: "2 days ago"
+        }
+    ],
+    bookings: [
+        {
+            id: "51719618",
+            status: "completed",
+            route: "Vadodara → Ahmedabad",
+            date: "Mar 26, 2025 • 17:30-19:30",
+            vehicle: "FORD FIGO ASPIRE (GJ-06-AX-4033)",
+            amount: "₹1600",
+            buttons: [
+                { type: "primary", icon: "fa-receipt", text: "Receipt" },
+                { type: "secondary", icon: "fa-redo", text: "Repeat" }
+            ]
+        },
+        {
+            id: "62348721",
+            status: "upcoming",
+            route: "Mumbai → Pune",
+            date: "Apr 15, 2025 • 09:00-12:30",
+            vehicle: "Toyota Innova",
+            amount: "₹2500",
+            buttons: [
+                { type: "primary", icon: "fa-edit", text: "Modify" },
+                { type: "secondary", icon: "fa-times", text: "Cancel" }
+            ]
+        },
+        {
+            id: "89234567",
+            status: "ongoing",
+            route: "Delhi → Gurgaon",
+            date: "Mar 28, 2025 • 14:00-15:30",
+            driver: "Rajesh Kumar (+91 98765 43210)",
+            vehicle: "Hyundai Creta",
+            buttons: [
+                { type: "primary", icon: "fa-phone-alt", text: "Call Driver" },
+                { type: "secondary", icon: "fa-map-marker-alt", text: "Track" }
+            ]
+        }
+    ]
+};
+
+// Route to render the dashboard
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard', { user: userData });
+});
+
+
 // Enhanced fare calculation function
 async function calculateFare(formType, pickup, drop) {
-    // In a real app, this would call Google Distance Matrix API
-    // For demo, we'll simulate API call with timeout
+    // Simulate API call with timeout
     await new Promise(resolve => setTimeout(resolve, 500));
 
     // Base fares based on service type
@@ -163,6 +317,7 @@ async function calculateFare(formType, pickup, drop) {
         distance: distance
     };
 }
+
 
 // Start server
 const PORT = process.env.PORT || 3000;

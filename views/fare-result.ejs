@@ -28,6 +28,12 @@
                 font-weight: bold;
                 border: none;
                 cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .price-tag:hover {
+                background: #e6b800;
+                transform: translateY(-2px);
             }
 
             #map {
@@ -41,6 +47,10 @@
                 background-color: transparent;
                 padding: 0.75rem 1rem;
             }
+
+            .cab-info {
+                flex-grow: 1;
+            }
         </style>
 </head>
 
@@ -48,42 +58,44 @@
     <%- include('partials/header', { currentPage: 'fare' }) %>
 
         <div class="container mt-4">
-            <nav>
+            <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#" id="pickup-location">
+                    <li class="breadcrumb-item"><a href="#">
                             <%= pickup %>
                         </a></li>
-                    <li class="breadcrumb-item active" id="drop-location">
+                    <li class="breadcrumb-item active" aria-current="page">
                         <%= drop %>
                     </li>
                 </ol>
             </nav>
 
             <div class="fare-box">
-                <h5><strong id="route-title">
+                <h5 class="mb-0"><strong>
                         <%= pickup %> to <%= drop %>
                     </strong></h5>
             </div>
 
             <% cabTypes.forEach(cab=> { %>
                 <div class="fare-box d-flex align-items-center">
-                    <img src="<%= cab.image %>" alt="<%= cab.type %>">
-                    <div class="flex-grow-1">
+                    <img src="/images/<%= cab.type.toLowerCase().replace(' ', '-') %>.png" alt="<%= cab.type %>">
+                    <div class="cab-info">
                         <strong>
                             <%= cab.type %>
                         </strong><br>
-                        <%= cab.models %>
+                        <small class="text-muted">
+                            <%= cab.models %>
+                        </small>
                     </div>
-                    <button class="price-tag" onclick="bookRide('<%= cab.type %>', <%= cab.fare %>)">
+                    <button class="price-tag"
+                        onclick="window.location.href='/book-ride?pickup=<%= encodeURIComponent(pickup) %>&drop=<%= encodeURIComponent(drop) %>&carType=<%= encodeURIComponent(cab.type) %>&fare=<%= cab.fare %>'">
                         ₹ <%= cab.fare.toFixed(2) %>
                     </button>
                 </div>
                 <% }); %>
 
-                    <!-- App Download Buttons -->
                     <div class="text-center my-4">
-                        <a href="https://play.google.com/store" target="_blank">
+                        <a href="https://play.google.com/store" target="_blank" class="me-2">
                             <img src="/images/google-play.png" alt="Google Play" width="150">
                         </a>
                         <a href="https://apps.apple.com/" target="_blank">
@@ -91,12 +103,10 @@
                         </a>
                     </div>
 
-                    <!-- Fare Info -->
                     <div class="fare-box text-center">
                         <strong>No Return Fare</strong> | Trusted by Thousands | Highly Rated (4.2 ⭐)
                     </div>
 
-                    <!-- FAQ Section -->
                     <div class="fare-box">
                         <h5>
                             <%= pickup %> to <%= drop %> Cab Details
@@ -115,12 +125,15 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="faqModalTitle">FAQ</h5>
+                        <h5 class="modal-title">FAQ</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <h6 id="faqQuestion"></h6>
-                        <p id="faqAnswer"></p>
+                        <p id="faqAnswer" class="mt-3"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -129,43 +142,11 @@
         <%- include('partials/footer') %>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=<%= googleApiKey %>&libraries=places"></script>
             <script>
                 // Initialize Google Map
-                function initMap(pickup, drop) {
-                    // Map initialization code would go here
-                    console.log(`Initializing map for ${pickup} to ${drop}`);
-                }
-
-                // Book Ride Function
-                function bookRide(carType, fare) {
-                    const tripData = {
-                        pickup: '<%= pickup %>',
-                        drop: '<%= drop %>',
-                        carType: carType,
-                        fare: fare,
-                        date: new Date().toISOString()
-                    };
-
-                    fetch('/api/bookings', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(tripData)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                window.location.href = `/booking-confirmation/${data.bookingId}`;
-                            } else {
-                                alert('Booking failed: ' + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('An error occurred while processing your booking');
-                        });
+                function initMap() {
+                    // This would be replaced with actual Google Maps initialization
+                    console.log('Map would be initialized here for <%= pickup %> to <%= drop %>');
                 }
 
                 // FAQ Modal Handling
@@ -179,8 +160,8 @@
                         });
                     }
 
-                    // Initialize map if needed
-                    initMap('<%= pickup %>', '<%= drop %>');
+                    // Initialize map
+                    initMap();
                 });
             </script>
 </body>
